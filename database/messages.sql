@@ -1,6 +1,6 @@
 create table if not exists сhat.messages
 (
-	id bigserial
+	id bigint default nextval('"сhat".messages_id_seq'::regclass) not null
 		constraint messages_pk
 			primary key,
 	chat_id integer
@@ -10,10 +10,8 @@ create table if not exists сhat.messages
 		constraint messages_users_id_fk
 			references сhat.users,
 	message varchar(4096)
-);
+)
+partition by RANGE (id);
 
 alter table сhat.messages owner to postgres;
-
-create index if not exists messages_chat_id_id_index
-	on сhat.messages (chat_id, id);
 
